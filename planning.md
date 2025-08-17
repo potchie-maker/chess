@@ -80,6 +80,16 @@ So the legal move methods are checking against this hash from the Board object
 
 Thus also makes it easy to serialize.
 
+Have the values of the hash be an array that holds the piece, and the array notation of the position.
+Ex: { e4 => [knight, [4, 3]] }
+When we change the pieces, we only change the zero index of the value. This allows the peices to be
+more easily told their place after more complex moves like castling.
+
+Or maybe I need a conversion between the board notation and the array notation.
+
+Or maybe the board data structure should just be a 2D array and the chess notation/conversion only
+happens for user input. This could simplify dealing with edge cases.
+
 ## MOVING PIECES
 
 Input syntax may be:

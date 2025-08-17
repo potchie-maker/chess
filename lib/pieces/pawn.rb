@@ -2,19 +2,17 @@ class Pawn
   def initialize(name)
     @name = name
     @pos = [0, 0] 
+    @moved_yet = false
   end
 
   def pawn_possible(curr)
     moves = [
-      [curr[0] + 1, curr[1] + 2],
-      [curr[0] + 2, curr[1] + 1],
-      [curr[0] + 2, curr[1] - 1],
-      [curr[0] + 1, curr[1] - 2],
-      [curr[0] - 1, curr[1] - 2],
-      [curr[0] - 2, curr[1] - 1],
-      [curr[0] - 2, curr[1] + 1],
-      [curr[0] - 1, curr[1] + 2]
+      [curr[0] + 0, curr[1] + 1],
     ]
+    unless @moved_yet
+      moves << [curr[0] + 0, curr[1] + 2]
+      @moved_yet = true
+    end
 
     moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
   end
@@ -30,7 +28,7 @@ class Pawn
         return path
       end
 
-      knight_possible(curr).each do |move|
+      pawn_possible(curr).each do |move|
         unless visited.include?(move)
           visited.add(move)
           queue << [move, path + [move]]

@@ -2,18 +2,21 @@ class King
   def initialize(name)
     @name = name
     @pos = [0, 0] 
+    @moved_yet = false
   end
 
   def king_possible(curr)
     moves = [
-      [curr[0] + 1, curr[1] + 2],
-      [curr[0] + 2, curr[1] + 1],
-      [curr[0] + 2, curr[1] - 1],
-      [curr[0] + 1, curr[1] - 2],
-      [curr[0] - 1, curr[1] - 2],
-      [curr[0] - 2, curr[1] - 1],
-      [curr[0] - 2, curr[1] + 1],
-      [curr[0] - 1, curr[1] + 2]
+      # horizontal & vertical
+      [curr[0] - 1, curr[1] + 0],
+      [curr[0] + 1, curr[1] + 0],
+      [curr[0] + 0, curr[1] + 1],
+      [curr[0] + 0, curr[1] - 1],
+      # diagonal
+      [curr[0] - 1, curr[1] + 1],
+      [curr[0] + 1, curr[1] + 1],
+      [curr[0] - 1, curr[1] - 1],
+      [curr[0] + 1, curr[1] - 1],
     ]
 
     moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
@@ -30,7 +33,7 @@ class King
         return path
       end
 
-      knight_possible(curr).each do |move|
+      king_possible(curr).each do |move|
         unless visited.include?(move)
           visited.add(move)
           queue << [move, path + [move]]
