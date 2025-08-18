@@ -1,6 +1,6 @@
 class Bishop
-  def initialize(name)
-    @name = name
+  def initialize(color)
+    @color = color
     @pos = [0, 0] 
   end
 

@@ -1,6 +1,6 @@
 class Pawn
-  def initialize(name)
-    @name = name
+  def initialize(color)
+    @color = color
     @pos = [0, 0] 
     @moved_yet = false
   end
