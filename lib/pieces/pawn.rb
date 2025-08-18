@@ -5,6 +5,10 @@ class Pawn
     @moved_yet = false
   end
 
+  def display_sym
+    @color == "white" ? "♙" : "♟"
+  end
+
   def pawn_possible(curr)
     moves = [
       [curr[0] + 0, curr[1] + 1],

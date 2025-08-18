@@ -4,6 +4,10 @@ class Queen
     @pos = [0, 0] 
   end
 
+  def display_sym
+    @color == "white" ? "♕" : "♛"
+  end
+
   def queen_possible(curr)
     moves = [
       # horizontal left

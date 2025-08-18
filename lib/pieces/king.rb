@@ -5,6 +5,10 @@ class King
     @moved_yet = false
   end
 
+  def display_sym
+    @color == "white" ? "♔" : "♚"
+  end
+
   def king_possible(curr)
     moves = [
       # horizontal & vertical

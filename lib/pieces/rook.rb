@@ -5,6 +5,10 @@ class Rook
     @moved_yet = false
   end
 
+  def display_sym
+    @color == "white" ? "♖" : "♜"
+  end
+
   def rook_possible(curr)
     moves = [
       # horizontal left

@@ -4,6 +4,10 @@ class Knight
     @pos = [0, 0] 
   end
 
+  def display_sym
+    @color == "white" ? "♘" : "♞"
+  end
+
   def knight_possible(curr)
     moves = [
       [curr[0] + 1, curr[1] + 2],

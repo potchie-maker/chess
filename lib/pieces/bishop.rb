@@ -4,6 +4,10 @@ class Bishop
     @pos = [0, 0] 
   end
 
+  def display_sym
+    @color == "white" ? "♗" : "♝"
+  end
+
   def bishop_possible(curr)
     moves = [
       # up and left
