@@ -12,6 +12,12 @@ class Board
     @board = Array.new(8) { Array.new(8) }
   end
 
+  def convert_notation(coord)
+    row = 8 - coord[1].to_i
+    column = coord[0].ord - "a".ord
+    [row, column]
+  end
+
   def print_board
     puts "\n\n"
     row_notation = 8
