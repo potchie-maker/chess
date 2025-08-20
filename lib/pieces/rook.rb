@@ -1,15 +1,11 @@
-class Rook
-  def initialize(color)
-    @color = color
-    @pos = [0, 0] 
-    @moved_yet = false
-  end
+require_relative "../piece"
 
+class Rook < Piece
   def display_sym
     @color == "white" ? "♖" : "♜"
   end
 
-  def rook_possible(curr)
+  def possible(curr)
     moves = [
       # horizontal left
       [curr[0] - 1, curr[1] + 0],
@@ -48,7 +44,7 @@ class Rook
     moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
   end
 
-  def rook_moves(start, fin)
+  def moves(start, fin)
     queue = [[start, [start]]]
     visited = Set.new
 

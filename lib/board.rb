@@ -12,9 +12,19 @@ class Board
     @board = Array.new(8) { Array.new(8) }
   end
 
-  def convert_notation(coord)
-    row = 8 - coord[1].to_i
-    column = coord[0].ord - "a".ord
+  def move_piece(start, fin)
+    
+  end
+
+  def convert_notation(notation)
+    row = 8 - notation[1].to_i
+    column = notation[0].ord - "a".ord
+    [row, column]
+  end
+
+  def convert_move_to_index(move)
+    row = 7 - move[1]
+    column = move[0]
     [row, column]
   end
 
@@ -76,7 +86,7 @@ class Board
     # rooks
     @board[7][0] = Rook.new("white")
     @board[7][7] = Rook.new("white")
-    @board[0][0] = Rook.new("black")
+    @board[0][0] = Rook.new("blackn")
     @board[0][7] = Rook.new("black")
     # knights
     @board[7][1] = Knight.new("white")
@@ -95,4 +105,80 @@ class Board
     @board[7][4] = King.new("white")
     @board[0][4] = King.new("black")
   end
-end
+e")
+    @board[0][7] = Rook.new("black")
+    # knights
+    @board[7][1] = Knight.new("white")
+    @board[7][6] = Knight.new("white")
+    @board[0][1] = Knight.new("black")
+    @board[0][6] = Knight.new("black")
+    # bishops
+    @board[7][2] = Bishop.new("white")
+    @board[7][5] = Bishop.new("white")
+    @board[0][2] = Bishop.new("black")
+    @board[0][5] = Bishop.new("black")
+    # queens
+    @board[7][3] = Queen.new("white")
+    @board[0][3] = Queen.new("black")
+    # kings
+    @board[7][4] = King.new("white")
+    @board[0][4] = King.new("black")
+  end
+e")
+    @board[0][7] = Rook.new("black")
+    # knights
+    @board[7][1] = Knight.new("white")
+    @board[7][6] = Knight.new("white")
+    @board[0][1] = Knight.new("black")
+    @board[0][6] = Knight.new("black")
+    # bishops
+    @board[7][2] = Bishop.new("white")
+    @board[7][5] = Bishop.new("white")
+    @board[0][2] = Bishop.new("black")
+    @board[0][5] = Bishop.new("black")
+    # queens
+    @board[7][3] = Queen.new("white")
+    @board[0][3] = Queen.new("black")
+    # kings
+    @board[7][4] = King.new("white")
+    @board[0][4] = King.new("black")
+  end
+e")
+    @board[0][7] = Rook.new("black")
+    # knights
+    @board[7][1] = Knight.new("white")
+    @board[7][6] = Knight.new("white")
+    @board[0][1] = Knight.new("black")
+    @board[0][6] = Knight.new("black")
+    # bishops
+    @board[7][2] = Bishop.new("white")
+    @board[7][5] = Bishop.new("white")
+    @board[0][2] = Bishop.new("black")
+    @board[0][5] = Bishop.new("black")
+    # queens
+    @board[7][3] = Queen.new("white")
+    @board[0][3] = Queen.new("black")
+    # kings
+    @board[7][4] = King.new("white")
+    @board[0][4] = King.new("black")
+  end
+e")
+    @board[0][7] = Rook.new("black")
+    # knights
+    @board[7][1] = Knight.new("white")
+    @board[7][6] = Knight.new("white")
+    @board[0][1] = Knight.new("black")
+    @board[0][6] = Knight.new("black")
+    # bishops
+    @board[7][2] = Bishop.new("white")
+    @board[7][5] = Bishop.new("white")
+    @board[0][2] = Bishop.new("black")
+    @board[0][5] = Bishop.new("black")
+    # queens
+    @board[7][3] = Queen.new("white")
+    @board[0][3] = Queen.new("black")
+    # kings
+    @board[7][4] = King.new("white")
+    @board[0][4]176:16 = King.new("black")
+  end
+d

@@ -1,14 +1,11 @@
-class Knight
-  def initialize(color)
-    @color = color
-    @pos = [0, 0] 
-  end
+require_relative "../piece"
 
+class Knight < Piece
   def display_sym
     @color == "white" ? "♘" : "♞"
   end
 
-  def knight_possible(curr)
+  def possible(curr)
     moves = [
       [curr[0] + 1, curr[1] + 2],
       [curr[0] + 2, curr[1] + 1],
@@ -23,7 +20,7 @@ class Knight
     moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
   end
 
-  def knight_moves(start, fin)
+  def moves(start, fin)
     queue = [[start, [start]]]
     visited = Set.new
 

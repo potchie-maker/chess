@@ -1,15 +1,11 @@
-class King
-  def initialize(color)
-    @color = color
-    @pos = [0, 0] 
-    @moved_yet = false
-  end
+require_relative "../piece"
 
+class King < Piece
   def display_sym
     @color == "white" ? "♔" : "♚"
   end
 
-  def king_possible(curr)
+  def possible(curr)
     moves = [
       # horizontal & vertical
       [curr[0] - 1, curr[1] + 0],
@@ -26,7 +22,7 @@ class King
     moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
   end
 
-  def king_moves(start, fin)
+  def moves(start, fin)
     queue = [[start, [start]]]
     visited = Set.new
 

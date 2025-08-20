@@ -1,14 +1,11 @@
-class Bishop
-  def initialize(color)
-    @color = color
-    @pos = [0, 0] 
-  end
+require_relative "../piece"
 
+class Bishop < Piece
   def display_sym
     @color == "white" ? "♗" : "♝"
   end
 
-  def bishop_possible(curr)
+  def possible(curr)
     moves = [
       # up and left
       [curr[0] - 1, curr[1] + 1],
@@ -47,7 +44,7 @@ class Bishop
     moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
   end
 
-  def bishop_moves(start, fin)
+  def moves(start, fin)
     queue = [[start, [start]]]
     visited = Set.new
 

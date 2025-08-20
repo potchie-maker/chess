@@ -1,15 +1,11 @@
-class Pawn
-  def initialize(color)
-    @color = color
-    @pos = [0, 0] 
-    @moved_yet = false
-  end
+require_relative "../piece"
 
+class Pawn < Piece
   def display_sym
     @color == "white" ? "♙" : "♟"
   end
 
-  def pawn_possible(curr)
+  def possible(curr, board)
     moves = [
       [curr[0] + 0, curr[1] + 1],
     ]
@@ -18,10 +14,11 @@ class Pawn
       @moved_yet = true
     end
 
+    if board[]
     moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
   end
 
-  def pawn_moves(start, fin)
+  def moves(start, fin)
     queue = [[start, [start]]]
     visited = Set.new
 

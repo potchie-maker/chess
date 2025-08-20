@@ -1,14 +1,11 @@
-class Queen
-  def initialize(color)
-    @color = color
-    @pos = [0, 0] 
-  end
+require_relative "../piece"
 
+class Queen < Piece
   def display_sym
     @color == "white" ? "♕" : "♛"
   end
 
-  def queen_possible(curr)
+  def possible(curr)
     moves = [
       # horizontal left
       [curr[0] - 1, curr[1] + 0],
@@ -79,7 +76,7 @@ class Queen
     moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
   end
 
-  def queen_moves(start, fin)
+  def moves(start, fin)
     queue = [[start, [start]]]
     visited = Set.new
 
