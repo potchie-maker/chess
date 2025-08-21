@@ -4,9 +4,9 @@ class Piece
   include Position
   attr_reader :color, :pos, :moves
 
-  def initialize(color)
+  def initialize(color, pos)
     @color = color
-    @pos = [0, 0] 
+    @pos = pos
     @moved_yet = false
     @moves
   end
