@@ -5,19 +5,26 @@ class Knight < Piece
     @color == "white" ? "♘" : "♞"
   end
 
-  def possible(curr)
-    moves = [
-      [curr[0] + 1, curr[1] + 2],
-      [curr[0] + 2, curr[1] + 1],
-      [curr[0] + 2, curr[1] - 1],
-      [curr[0] + 1, curr[1] - 2],
-      [curr[0] - 1, curr[1] - 2],
-      [curr[0] - 2, curr[1] - 1],
-      [curr[0] - 2, curr[1] + 1],
-      [curr[0] - 1, curr[1] + 2]
+  def possible(curr, board)
+    deltas = [
+      # left-up
+      [-1, -2], [-2, -1],
+      # right-up
+      [-2, 1], [-1, 2],
+      # right-down
+      [1, 2], [2, 1],
+      # left-down
+      [2, -1], [1, -2],
     ]
 
-    moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
+    enemy_color = @color == "white" ? "black" : "white"
+
+    moves = deltas.map{ |row_delta, col_delta| [curr[0] + row_delta, curr[1] + col_delta]}
+    moves.select do |row, col|
+      row.between?(0, 7) &&
+      col.between?(0, 7) &&
+      (board[row][col]&.nil? || board[row][col]&.color == enemy_color)
+    end
   end
 
   def moves(start, fin)
@@ -31,7 +38,7 @@ class Knight < Piece
         return path
       end
 
-      knight_possible(curr).each do |move|
+      possible(curr).each do |move|
         unless visited.include?(move)
           visited.add(move)
           queue << [move, path + [move]]

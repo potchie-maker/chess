@@ -5,75 +5,35 @@ class Queen < Piece
     @color == "white" ? "♕" : "♛"
   end
 
-  def possible(curr)
-    moves = [
-      # horizontal left
-      [curr[0] - 1, curr[1] + 0],
-      [curr[0] - 2, curr[1] + 0],
-      [curr[0] - 3, curr[1] + 0],
-      [curr[0] - 4, curr[1] + 0],
-      [curr[0] - 5, curr[1] + 0],
-      [curr[0] - 6, curr[1] + 0],
-      [curr[0] - 7, curr[1] + 0],
-      # horizontal right
-      [curr[0] + 1, curr[1] + 0],
-      [curr[0] + 2, curr[1] + 0],
-      [curr[0] + 3, curr[1] + 0],
-      [curr[0] + 4, curr[1] + 0],
-      [curr[0] + 5, curr[1] + 0],
-      [curr[0] + 6, curr[1] + 0],
-      [curr[0] + 7, curr[1] + 0],
-      # vertical up
-      [curr[0] + 0, curr[1] + 1],
-      [curr[0] + 0, curr[1] + 2],
-      [curr[0] + 0, curr[1] + 3],
-      [curr[0] + 0, curr[1] + 4],
-      [curr[0] + 0, curr[1] + 5],
-      [curr[0] + 0, curr[1] + 6],
-      [curr[0] + 0, curr[1] + 7],
-      # vertical down
-      [curr[0] + 0, curr[1] - 1],
-      [curr[0] + 0, curr[1] - 2],
-      [curr[0] + 0, curr[1] - 3],
-      [curr[0] + 0, curr[1] - 4],
-      [curr[0] + 0, curr[1] - 5],
-      [curr[0] + 0, curr[1] - 6],
-      [curr[0] + 0, curr[1] - 7],
-      # up and left
-      [curr[0] - 1, curr[1] + 1],
-      [curr[0] - 2, curr[1] + 2],
-      [curr[0] - 3, curr[1] + 3],
-      [curr[0] - 4, curr[1] + 4],
-      [curr[0] - 5, curr[1] + 5],
-      [curr[0] - 6, curr[1] + 6],
-      [curr[0] - 7, curr[1] + 7],
-      # up and right
-      [curr[0] + 1, curr[1] + 1],
-      [curr[0] + 2, curr[1] + 2],
-      [curr[0] + 3, curr[1] + 3],
-      [curr[0] + 4, curr[1] + 4],
-      [curr[0] + 5, curr[1] + 5],
-      [curr[0] + 6, curr[1] + 6],
-      [curr[0] + 7, curr[1] + 7],
-      # down and left
-      [curr[0] - 1, curr[1] - 1],
-      [curr[0] - 2, curr[1] - 2],
-      [curr[0] - 3, curr[1] - 3],
-      [curr[0] - 4, curr[1] - 4],
-      [curr[0] - 5, curr[1] - 5],
-      [curr[0] - 6, curr[1] - 6],
-      [curr[0] - 7, curr[1] - 7],
-      # down and right
-      [curr[0] + 1, curr[1] - 1],
-      [curr[0] + 2, curr[1] - 2],
-      [curr[0] + 3, curr[1] - 3],
-      [curr[0] + 4, curr[1] - 4],
-      [curr[0] + 5, curr[1] - 5],
-      [curr[0] + 6, curr[1] - 6],
-      [curr[0] + 7, curr[1] - 7],
+  def possible(curr, board)
+    deltas = [
+      # horizontal
+      [0, -1], # left
+      [0, 1], # right
+      # vertical
+      [-1, 0], # up
+      [1, 0], # down
+      # diagonals
+      [-1, -1], # up-left
+      [-1, 1], # up-right
+      [1, 1], # down-right
+      [1, -1], # down-left
     ]
 
-    moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
+    moves = []
+    enemy_color = @color == "white" ? "black" : "white"
+
+    deltas.each do |row_delta, column_delta|
+      1.upto(7) do |step|
+        row = curr[0] + row_delta * step
+        col = curr[1] + column_delta * step
+        break unless row.between?(0, 7) && column.between?(0, 7)
+        break if board[row][col]&.color == @color
+        moves << [row, col]
+        break if board[row][col]&.color == enemy_color
+      end
+    end
+    moves
   end
 
   def moves(start, fin)

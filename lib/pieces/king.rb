@@ -5,21 +5,29 @@ class King < Piece
     @color == "white" ? "♔" : "♚"
   end
 
-  def possible(curr)
-    moves = [
+  def possible(curr, board)
+    deltas = [
       # horizontal & vertical
-      [curr[0] - 1, curr[1] + 0],
-      [curr[0] + 1, curr[1] + 0],
-      [curr[0] + 0, curr[1] + 1],
-      [curr[0] + 0, curr[1] - 1],
+      [-1, 0],
+      [1, 0],
+      [0, 1],
+      [0, -1],
       # diagonal
-      [curr[0] - 1, curr[1] + 1],
-      [curr[0] + 1, curr[1] + 1],
-      [curr[0] - 1, curr[1] - 1],
-      [curr[0] + 1, curr[1] - 1],
+      [-1, 1],
+      [1, 1],
+      [-1, -1],
+      [1, -1],
     ]
 
-    moves.select { |x, y| x.between?(0, 7) && y.between?(0, 7) }
+    moves = []
+
+    deltas.each do |row_delta, col_delta|
+      row = curr[0] + row_delta
+      col = curr[1] + col_delta
+      next unless row.between?(0, 7) && col.between?(0, 7)
+      next if board[row][col]&.color == @color
+      moves << [row, col]
+    end
   end
 
   def moves(start, fin)
