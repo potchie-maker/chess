@@ -12,6 +12,20 @@ class Board
     @board = Array.new(8) { Array.new(8) }
   end
 
+  def piece_at(pos)
+    row, col = pos
+    @board[row][col]
+  end
+
+  def deep_copy
+    copy = @board.map do |row|
+      row.map do |piece|
+        piece.dup
+      end
+    end
+    copy
+  end
+
   def print_board
     puts "\n\n"
     row_notation = 8
