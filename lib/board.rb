@@ -31,12 +31,11 @@ class Board
     puts "\n\n"
     row_notation = 8
     coloumn_notation = ("a".."h").to_a
-    transformed_board = transform_board
-    transformed_board.each do |row|
+    transform_board.each do |row|
       puts row_notation.to_s + "  " + row.join("  ")
       row_notation -= 1
     end
-    puts "   " + coloumn_notation.join("  ")
+    puts "   #{coloumn_notation.join('  ')}"
   end
 
   def transform_board
@@ -85,7 +84,7 @@ class Board
     # rooks
     @board[7][0] = Rook.new("white", [7, 0])
     @board[7][7] = Rook.new("white", [7, 7])
-    @board[0][0] = Rook.new("blackn", [0, 0])
+    @board[0][0] = Rook.new("black", [0, 0])
     @board[0][7] = Rook.new("black", [0, 7])
     # knights
     @board[7][1] = Knight.new("white", [7, 1])
