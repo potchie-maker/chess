@@ -30,36 +30,21 @@ class Board
   def print_board
     puts "\n\n"
     row_notation = 8
-    coloumn_notation = ("a".."h").to_a
+    col_notation = ("a".."h").to_a
     transform_board.each do |row|
       puts row_notation.to_s + "  " + row.join("  ")
       row_notation -= 1
     end
-    puts "   #{coloumn_notation.join('  ')}"
+    puts "   #{col_notation.join('  ')}"
   end
 
   def transform_board
-    blank_board = [
-      ["□", "■", "□", "■", "□", "■", "□", "■"],
-      ["■", "□", "■", "□", "■", "□", "■", "□"],
-      ["□", "■", "□", "■", "□", "■", "□", "■"],
-      ["■", "□", "■", "□", "■", "□", "■", "□"],
-      ["□", "■", "□", "■", "□", "■", "□", "■"],
-      ["■", "□", "■", "□", "■", "□", "■", "□"],
-      ["□", "■", "□", "■", "□", "■", "□", "■"],
-      ["■", "□", "■", "□", "■", "□", "■", "□"],
-    ]
-    written_board = Array.new(@board[0].length) { Array.new(@board[0].length) }
-    blank_board.each_with_index do |row, i|
-      row.each_with_index do |space, j|
-        unless @board[i][j].nil?
-          written_board[i][j] = @board[i][j].display_sym
-        else
-          written_board[i][j] = blank_board[i][j]
-        end
+    blank_board = Array.new(8) { |i| Array.new(8) { |j| (i + j).even? ? "□" : "■"} }
+    @board.each_with_index.map do |row, i|
+      row.each_with_index.map do |piece, j|
+        piece ? piece.display_sym : blank_board[i][j]
       end
     end
-    written_board
   end
 
   def set_up

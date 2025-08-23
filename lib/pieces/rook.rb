@@ -16,11 +16,11 @@ class Rook < Piece
     moves = []
     enemy_color = @color == "white" ? "black" : "white"
 
-    deltas.each do |row_delta, column_delta|
+    deltas.each do |row_delta, col_delta|
       1.upto(7) do |step|
         row = curr[0] + row_delta * step
-        col = curr[1] + column_delta * step
-        break unless row.between?(0, 7) && column.between?(0, 7)
+        col = curr[1] + col_delta * step
+        break unless row.between?(0, 7) && col.between?(0, 7)
         break if board[row][col]&.color == @color
         moves << [row, col]
         break if board[row][col]&.color == enemy_color
