@@ -6,7 +6,7 @@ require_relative "pieces/queen"
 require_relative "pieces/rook"
 
 class Board
-  attr_reader :board
+  attr_accessor :board
 
   def initialize
     @board = Array.new(8) { Array.new(8) }
@@ -17,13 +17,14 @@ class Board
     @board[row][col]
   end
 
-  def deep_copy
-    copy = @board.map do |row|
+  def deep_board_copy
+    board_copy = self.class.new
+    board_copy.board = @board.map do |row|
       row.map do |piece|
-        piece.dup
+        piece ? piece.deep_piece_copy : nil
       end
     end
-    copy
+    board_copy
   end
 
   def print_board
@@ -73,14 +74,14 @@ class Board
     @board[6][6] = Pawn.new("white", [6, 6])
     @board[6][7] = Pawn.new("white", [6, 7])
     # black pawns
-    @board[1][0] = Pawn.new("black", [5, 0])
-    @board[1][1] = Pawn.new("black", [5, 1])
-    @board[1][2] = Pawn.new("black", [5, 2])
-    @board[1][3] = Pawn.new("black", [5, 3])
-    @board[1][4] = Pawn.new("black", [5, 4])
-    @board[1][5] = Pawn.new("black", [5, 5])
-    @board[1][6] = Pawn.new("black", [5, 6])
-    @board[1][7] = Pawn.new("black", [5, 7])
+    @board[1][0] = Pawn.new("black", [1, 0])
+    @board[1][1] = Pawn.new("black", [1, 1])
+    @board[1][2] = Pawn.new("black", [1, 2])
+    @board[1][3] = Pawn.new("black", [1, 3])
+    @board[1][4] = Pawn.new("black", [1, 4])
+    @board[1][5] = Pawn.new("black", [1, 5])
+    @board[1][6] = Pawn.new("black", [1, 6])
+    @board[1][7] = Pawn.new("black", [1, 7])
     # rooks
     @board[7][0] = Rook.new("white", [7, 0])
     @board[7][7] = Rook.new("white", [7, 7])
