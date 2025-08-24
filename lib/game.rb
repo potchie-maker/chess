@@ -10,6 +10,19 @@ class Game
     @taken = { "white" => [], "black" => [] }
   end
 
+  def player_turn
+    puts "\n\n#{@turn.capitalize}, make your move."
+    loop do
+      start, fin = get_move
+      if legal_move?(start, fin)
+        move_piece(@game_board.board, start, fin)
+        @turn = enemy_color
+        return
+      end
+      puts "\n\nMove is not legal. #{@turn.capitalize}, try again."
+    end
+  end
+
   def get_move
     loop do
       puts "\n\nInput desired move."
