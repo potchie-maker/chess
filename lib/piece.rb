@@ -1,7 +1,4 @@
-require_relative "./position"
-
 class Piece
-  include Position
   attr_reader :color
   attr_accessor :pos, :moved_yet, :moves
 

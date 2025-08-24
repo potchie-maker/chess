@@ -1,24 +1,38 @@
 require_relative "board"
+require_relative "position"
 
 class Game
+  include Position
+
   def initialize
     @game_board = Board.new
     @turn = "white"
     @taken = { "white" => [], "black" => [] }
   end
 
-  def legal_move?(start, fin)
-    start_conv = convert_notation_to_row_col(start) 
-    fin_conv = convert_notation_to_row_col(fin)
+  def get_move
+    loop do
+      puts "\n\nInput desired move."
+      puts "Ex: e2 > e4"
+      input = gets.chomp
+      if  (m = /\A\s*(?<start>[a-h][1-8])\s*>\s*(?<fin>[a-h][1-8])\s*\z/i.match(input))
+        start = convert_notation_to_row_col(m[:start].downcase)
+        fin = convert_notation_to_row_col(m[:fin].downcase)
+        return [start, fin]
+      end
+      puts "\n\nInvalid move input. Try again"
+    end
+  end
 
-    piece = @game_board.piece_at(start_conv)
+  def legal_move?(start, fin)
+    piece = @game_board.piece_at(start)
     return false if piece.nil?
 
     moves = piece.possible(piece.pos, @game_board.board)
-    return false unless moves.include?(fin_conv)
+    return false unless moves.include?(fin)
 
     game_copy = @game_board.deep_board_copy
-    move_piece(game_copy.board, start_conv, fin_conv)
+    move_piece(game_copy.board, start, fin)
     return false if in_check?(game_copy.board)
 
     true
