@@ -1,12 +1,12 @@
 class Piece
   attr_reader :color
-  attr_accessor :pos, :moved_yet, :moves
+  attr_accessor :pos, :moved_yet, :times_moved
 
   def initialize(color, pos)
     @color = color
     @pos = pos
     @moved_yet = false
-    @moves = 0
+    @times_moved = 0
   end
 
   def deep_piece_copy

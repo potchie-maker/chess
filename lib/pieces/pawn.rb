@@ -29,6 +29,7 @@ class Pawn < Piece
         moves << [forward_one, atk_col] if target&.color == enemy_color
       end
     end
+    moves
   end
 
   def moves(start, fin)
