@@ -2,15 +2,15 @@ require_relative "../piece"
 
 class Pawn < Piece
   def display_sym
-    @color == "white" ? "♙" : "♟"
+    @color == :white ? "♙" : "♟"
   end
 
   def possible(curr, board)
     row, col = curr
     moves = []
 
-    direction = @color == "white" ? -1 : 1
-    enemy_color = @color == "white" ? "black" : "white"
+    direction = @color == :white ? -1 : 1
+    enemy_color = @color == :white ? :black : :white
 
     forward_one = row + direction
     if forward_one.between?(0, 7) && board[forward_one][col].nil?

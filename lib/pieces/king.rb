@@ -2,7 +2,7 @@ require_relative "../piece"
 
 class King < Piece
   def display_sym
-    @color == "white" ? "♔" : "♚"
+    @color == :white ? "♔" : "♚"
   end
 
   def possible(curr, board)

@@ -6,8 +6,8 @@ class Game
 
   def initialize
     @game_board = Board.new
-    @turn = "white"
-    @taken = { "white" => [], "black" => [] }
+    @turn = :white
+    @taken = { :white => [], :black => [] }
   end
 
   def player_turn
@@ -118,6 +118,6 @@ class Game
   end
 
   def enemy_color
-    @turn == "white" ? "black" : "white"
+    @turn == :white ? :black : :white
   end
 end

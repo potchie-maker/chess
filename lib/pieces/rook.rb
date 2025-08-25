@@ -2,7 +2,7 @@ require_relative "../piece"
 
 class Rook < Piece
   def display_sym
-    @color == "white" ? "♖" : "♜"
+    @color == :white ? "♖" : "♜"
   end
 
   def possible(curr, board)
@@ -14,7 +14,7 @@ class Rook < Piece
     ]
 
     moves = []
-    enemy_color = @color == "white" ? "black" : "white"
+    enemy_color = @color == :white ? :black : :white
 
     deltas.each do |row_delta, col_delta|
       1.upto(7) do |step|

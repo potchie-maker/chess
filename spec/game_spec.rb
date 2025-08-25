@@ -57,8 +57,8 @@ describe Game do
     context "when searching for kings" do
 
       it "returns correct king positions" do
-        king_one = King.new("white", [0, 1])
-        king_two = King.new("black", [1, 0])
+        king_one = King.new(:white, [0, 1])
+        king_two = King.new(:black, [1, 0])
         board = [
           [nil, king_one, nil],
           [king_two, nil, nil]

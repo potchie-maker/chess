@@ -2,7 +2,7 @@ require_relative "../piece"
 
 class Knight < Piece
   def display_sym
-    @color == "white" ? "♘" : "♞"
+    @color == :white ? "♘" : "♞"
   end
 
   def possible(curr, board)
@@ -17,7 +17,7 @@ class Knight < Piece
       [2, -1], [1, -2],
     ]
 
-    enemy_color = @color == "white" ? "black" : "white"
+    enemy_color = @color == :white ? :black : :white
 
     moves = deltas.map{ |row_delta, col_delta| [curr[0] + row_delta, curr[1] + col_delta]}
     moves.select do |row, col|
