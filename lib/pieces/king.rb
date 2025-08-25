@@ -8,26 +8,18 @@ class King < Piece
   def possible(curr, board)
     deltas = [
       # horizontal & vertical
-      [-1, 0],
-      [1, 0],
-      [0, 1],
-      [0, -1],
-      # diagonal
-      [-1, 1],
-      [1, 1],
-      [-1, -1],
-      [1, -1],
+      [0, -1], # left
+      [0, 1], # right
+      [-1, 0], # up
+      [1, 0], # down
+      # diagonals
+      [-1, -1], # up-left
+      [-1, 1], # up-right
+      [1, 1], # down-right
+      [1, -1], # down-left
     ]
 
-    moves = []
-
-    deltas.each do |row_delta, col_delta|
-      row = curr[0] + row_delta
-      col = curr[1] + col_delta
-      next unless row.between?(0, 7) && col.between?(0, 7)
-      next if board[row][col]&.color == @color
-      moves << [row, col]
-    end
+    sliding_moves(deltas, curr, board, max_slide: 1)
   end
 
   def moves(start, fin)

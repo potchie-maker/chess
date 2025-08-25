@@ -7,10 +7,9 @@ class Queen < Piece
 
   def possible(curr, board)
     deltas = [
-      # horizontal
+      # horizontal & vertical
       [0, -1], # left
       [0, 1], # right
-      # vertical
       [-1, 0], # up
       [1, 0], # down
       # diagonals
@@ -20,20 +19,7 @@ class Queen < Piece
       [1, -1], # down-left
     ]
 
-    moves = []
-    enemy_color = @color == :white ? :black : :white
-
-    deltas.each do |row_delta, col_delta|
-      1.upto(7) do |step|
-        row = curr[0] + row_delta * step
-        col = curr[1] + col_delta * step
-        break unless row.between?(0, 7) && col.between?(0, 7)
-        break if board[row][col]&.color == @color
-        moves << [row, col]
-        break if board[row][col]&.color == enemy_color
-      end
-    end
-    moves
+    sliding_moves(deltas, curr, board, max_slide: 7)
   end
 
   def moves(start, fin)

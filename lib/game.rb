@@ -11,7 +11,7 @@ class Game
   end
 
   def player_turn
-    puts "\n\n#{@turn.capitalize}, make your move."
+    puts "\n\n#{@turn.to_s.capitalize}, make your move."
     loop do
       start, fin = get_move
       if legal_move?(start, fin, skip_possible: false)
@@ -19,7 +19,7 @@ class Game
         @turn = enemy_color
         return
       end
-      puts "\n\nMove is not legal. #{@turn.capitalize}, try again."
+      puts "\n\nMove is not legal. #{@turn.to_s.capitalize}, try again."
     end
   end
 
