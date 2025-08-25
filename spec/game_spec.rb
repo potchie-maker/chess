@@ -50,4 +50,23 @@ describe Game do
       end
     end
   end
+
+  describe "#find_kings" do
+    subject(:game_kings) { described_class.new }
+
+    context "when searching for kings" do
+
+      it "returns correct king positions" do
+        king_one = King.new("white", [0, 1])
+        king_two = King.new("black", [1, 0])
+        board = [
+          [nil, king_one, nil],
+          [king_two, nil, nil]
+        ]
+        first_pos = [0, 1]
+        sec_pos = [1, 0]
+        expect(game_kings.find_kings(board)).to eq([first_pos, sec_pos])
+      end
+    end
+  end
 end
