@@ -10,23 +10,38 @@ class Game
     @taken = { :white => [], :black => [] }
   end
 
+  def play_game
+    @game_board.set_up
+    loop do
+      @game_board.print_board
+      player_turn
+      if checkmate?
+        @game_board.print_board
+        return puts "Checkmate! #{@turn.to_s.capitalize} wins!" if checkmate?
+      end
+      if stalemate?
+        @game_board.print_board
+        return puts "Stalemate. This game ended in a draw." if stalemate?
+      end
+      @turn = enemy_color
+    end
+  end
+
   def player_turn
     puts "\n\n#{@turn.to_s.capitalize}, make your move."
     loop do
       start, fin = get_move
       if legal_move?(start, fin, skip_possible: false)
         move_piece(@game_board.board, start, fin)
-        @turn = enemy_color
         return
       end
-      puts "\n\nMove is not legal. #{@turn.to_s.capitalize}, try again."
     end
   end
 
   def get_move
     loop do
       puts "\n\nInput desired move."
-      puts "Ex: e2 > e4"
+      puts "Ex: e2 > e4\n\n"
       input = gets.chomp
       if  (m = /\A\s*(?<start>[a-h][1-8])\s*>\s*(?<fin>[a-h][1-8])\s*\z/i.match(input))
         start = convert_notation_to_row_col(m[:start].downcase)
@@ -38,11 +53,11 @@ class Game
   end
 
   def checkmate?
-    in_check?(@game_board) && !any_legal_moves?
+    in_check?(@game_board.board) && !any_legal_moves?
   end
 
   def stalemate?
-    !in_check?(@game_board) && !any_legal_moves?
+    !in_check?(@game_board.board) && !any_legal_moves?
   end
 
   def any_legal_moves?
@@ -58,21 +73,28 @@ class Game
   end
 
   def legal_move?(start, fin, skip_possible: false)
+    try_again_msg = "#{@turn.to_s.capitalize}, try again."
     piece = @game_board.piece_at(start)
     if piece.nil? || piece.color != @turn
-      puts "A valid piece does not exist at that starting spot." unless skip_possible
+      @game_board.print_board
+      puts "\n\nA valid piece does not exist at that starting spot." unless skip_possible
+      puts try_again_msg
       return false
     end
 
     if @game_board.piece_at(fin).is_a?(King)
-      puts "Cannot land on a King." unless skip_possible
+      @game_board.print_board
+      puts "\n\nCannot land on a King." unless skip_possible
+      puts try_again_msg
       return false
     end
 
     unless skip_possible
       moves = piece.possible(piece.pos, @game_board.board)
       unless moves.include?(fin)
-        puts "That movement isn't possible."
+        @game_board.print_board
+        puts "\n\nThat movement isn't possible."
+        puts try_again_msg
         return false
       end
     end
@@ -80,7 +102,9 @@ class Game
     game_copy = @game_board.deep_board_copy
     move_piece(game_copy.board, start, fin)
     if in_check?(game_copy.board)
-      puts "That move leaves your King in check."
+      @game_board.print_board
+      puts "\n\nThat move leaves your King in check."
+      puts try_again_msg
       return false
     end
 
@@ -92,26 +116,31 @@ class Game
       row.each_with_index do |space, j|
         next unless space&.color == enemy_color
         moves = space.possible([i, j], board)
-        retur true if find_kings(board).any? { |king_pos| moves.include?(king_pos) }
+        return true if moves.include?(find_king(board))
       end
     end
     false
   end
 
-  def find_kings(board)
-    kings = []
+  def find_king(board)
     board.each_with_index do |row, i|
       row.each_with_index do |space, j|
-        kings << [i, j] if space.is_a?(King)
+        return [i, j] if space.is_a?(King) && space.color == @turn
       end
     end
-    kings
   end
 
   def move_piece(board, start, fin)
     board[fin[0]][fin[1]] = board[start[0]][start[1]]
     board[start[0]][start[1]] = nil
     piece = board[fin[0]][fin[1]]
+
+    # auto queen pawn promotion
+    if piece.is_a?(Pawn) && (fin[0] == 0 || fin[0] == 7)
+      board[fin[0]][fin[1]] = Queen.new(piece.color, fin)
+      piece = board[fin[0]][fin[1]]
+    end
+
     piece.pos = fin
     piece.moved_yet = true
     piece.times_moved += 1

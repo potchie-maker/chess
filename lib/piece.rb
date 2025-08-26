@@ -30,7 +30,7 @@ class Piece
     piece_copy = dup
     piece_copy.pos = @pos.dup
     piece_copy.moved_yet = @moved_yet
-    piece_copy.moves = @moves
+    piece_copy.times_moved = @times_moved
     piece_copy
   end
 end
