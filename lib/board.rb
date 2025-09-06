@@ -6,10 +6,11 @@ require_relative "pieces/queen"
 require_relative "pieces/rook"
 
 class Board
-  attr_accessor :board
+  attr_accessor :board, :en_passant_target
 
   def initialize
     @board = Array.new(8) { Array.new(8) }
+    @en_passant_target = nil
   end
 
   def piece_at(pos)
@@ -20,10 +21,9 @@ class Board
   def deep_board_copy
     board_copy = self.class.new
     board_copy.board = @board.map do |row|
-      row.map do |piece|
-        piece ? piece.deep_piece_copy : nil
-      end
+      row.map { |piece| piece ? piece.deep_piece_copy : nil }
     end
+    board_copy.en_passant_target = @en_passant_target&.dup
     board_copy
   end
 
@@ -51,7 +51,7 @@ class Board
     # white pawns
     @board[6][0] = Pawn.new(:white, [6, 0])
     @board[6][1] = Pawn.new(:white, [6, 1])
-    @board[6][2] = Pawn.new(:white, [6, 2] )
+    @board[6][2] = Pawn.new(:white, [6, 2])
     @board[6][3] = Pawn.new(:white, [6, 3])
     @board[6][4] = Pawn.new(:white, [6, 4])
     @board[6][5] = Pawn.new(:white, [6, 5])

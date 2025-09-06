@@ -5,7 +5,9 @@ class Rook < Piece
     @color == :white ? "♖" : "♜"
   end
 
-  def possible(curr, board)
+  def possible(curr, board_obj)
+    board = board_obj.board
+
     deltas = [
       [0, -1], # left
       [0, 1], # right
@@ -14,25 +16,5 @@ class Rook < Piece
     ]
 
     sliding_moves(deltas, curr, board, max_slide: 7)
-  end
-
-  def moves(start, fin)
-    queue = [[start, [start]]]
-    visited = Set.new
-
-    until queue.empty?
-      curr, path = queue.shift
-      if curr == fin
-        yield(path) if block_given?
-        return path
-      end
-
-      rook_possible(curr).each do |move|
-        unless visited.include?(move)
-          visited.add(move)
-          queue << [move, path + [move]]
-        end
-      end
-    end
   end
 end

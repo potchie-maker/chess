@@ -5,7 +5,11 @@ class King < Piece
     @color == :white ? "♔" : "♚"
   end
 
-  def possible(curr, board)
+  def possible(curr, board_obj)
+    board = board_obj.board
+    r, _c = curr[0]
+    moves = []
+
     deltas = [
       # horizontal & vertical
       [0, -1], # left
@@ -19,26 +23,20 @@ class King < Piece
       [1, -1], # down-left
     ]
 
-    sliding_moves(deltas, curr, board, max_slide: 1)
-  end
+    moves = sliding_moves(deltas, curr, board, max_slide: 1)
 
-  def moves(start, fin)
-    queue = [[start, [start]]]
-    visited = Set.new
+    return moves if moved_yet
 
-    until queue.empty?
-      curr, path = queue.shift
-      if curr == fin
-        yield(path) if block_given?
-        return path
-      end
-
-      king_possible(curr).each do |move|
-        unless visited.include?(move)
-          visited.add(move)
-          queue << [move, path + [move]]
-        end
-      end
+    if board[r][5].nil? && board[r][6].nil?
+      rook = board[r][7]
+      moves << [r, 6] if rook.is_a?(Rook) && !rook.moved_yet && rook.color == color
     end
+
+    if board[r][1].nil? && board[r][2].nil? && board[r][3].nil?
+      rook = board[r][0]
+      moves << [r, 2] if rook.is_a?(Rook) && !rook.moved_yet && rook.color == color
+    end
+
+    moves
   end
 end
