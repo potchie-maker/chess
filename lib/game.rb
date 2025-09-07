@@ -118,13 +118,25 @@ class Game
       end
     end
 
-    game_copy = @game_board.deep_board_copy
-    move_piece(game_copy, start, fin)
-    if in_check?(game_copy)
+    if piece.is_a?(Pawn) && (fin[0] == 0 || fin[0] == 7)
+      [:queen, :rook, :bishop, :knight].each do |promo|
+        game_copy = @game_board.deep_board_copy
+        move_piece(game_copy, start, fin, simulate: true, promotion: promo)
+        return true unless in_check?(game_copy)
+      end
       @game_board.print_board
-      puts "\n\nThat move leaves your King in check."
+      puts "\n\nThat promotion would leave King in check (all choices)."
       puts try_again_msg
       return false
+    else
+      game_copy = @game_board.deep_board_copy
+      move_piece(game_copy, start, fin, simulate: true)
+      if in_check?(game_copy)
+        @game_board.print_board
+        puts "\n\nThat move leaves your King in check."
+        puts try_again_msg
+        return false
+      end
     end
 
     true
@@ -142,6 +154,7 @@ class Game
         return [i, j] if space.is_a?(King) && space.color == @turn
       end
     end
+    nil
   end
 
   def square_attacked_by?(board_obj, square, by_color)
@@ -162,7 +175,7 @@ class Game
     false
   end
   
-  def move_piece(board_obj, start, fin)
+  def move_piece(board_obj, start, fin, simulate: false, promotion: nil)
     board = board_obj.board
     sr, sc = start
     fr, fc = fin
@@ -180,10 +193,24 @@ class Game
     board[fr][fc] = piece
     board[sr][sc] = nil
 
-    # auto-queen promotion
+    # promotion
     if piece.is_a?(Pawn) && (fr == 0 || fr == 7)
-      board[fr][fc] = Queen.new(piece.color, [fr, fc])
-      piece = board[fr][fc]
+      new_pos = [fr, fc]
+      new_piece = 
+        if simulate
+          case promotion
+          when :queen then Queen.new(piece.color, new_pos)
+          when :rook then Rook.new(piece.color, new_pos)
+          when :bishop then Bishop.new(piece.color, new_pos)
+          when :knight then Knight.new(piece.color, new_pos)
+          else
+            Queen.new(piece.color, new_pos)
+          end
+        else
+          promote_to_choice(piece.color, new_pos)
+        end
+      board[fr][fc] = new_piece
+      piece = new_piece
     end
 
     # set en passant target
@@ -212,6 +239,21 @@ class Game
       rook.pos = rook_to
       rook.moved_yet = true
       rook.times_moved += 1
+    end
+  end
+
+  def promote_to_choice(color, pos)
+    loop do
+      puts "\n\nPromote to (Q, R, B, N)?"
+      choice = gets&.chomp&.strip&.downcase
+      case choice
+      when "q", "queen" then return Queen.new(color, pos)
+      when "r", "rook" then return Rook.new(color, pos)
+      when "b", "bishop" then return Bishop.new(color, pos)
+      when "n", "k", "knight" then return Knight.new(color, pos)
+      else
+        puts "\n\nInvalid choice. Type Q, R, B, or N."
+      end
     end
   end
 
